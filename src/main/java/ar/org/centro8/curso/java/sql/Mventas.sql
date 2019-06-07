@@ -37,6 +37,7 @@ item int primary key,
 idproveedor int not null,
 nombre varchar(25) not null,
 idcategoria int not null,
+stock int,
 prec_venta int,
 descripcion varchar (50)
 );
@@ -47,19 +48,25 @@ nombre varchar (25) not null,
 direccion varchar (25) not null,
 fech_pago date,
 itemProducto int not null,
-stock int,
 descripcion varchar (255)
 );
 
 create table ventas(
 id int auto_increment primary key ,
-idusuario int,
-cliente varchar (25) null,
+idusuario int not null,
+idcliente int,
 itemProducto int,
 cantidad int not null,
 descuento int null,
 total decimal not null,
 descripcion varchar(150)null
+);
+
+create table clientes(
+id int auto_increment primary key,
+datos varchar (150),
+telefono char (13),
+lugar varchar (255)
 );
 
 -- Agregando  foreign key a la tabla productos
@@ -82,11 +89,14 @@ alter table ventas add constraint fk_ventasIdUsuario
 foreign key(idusuario) references usuarios(id)
 on delete cascade;
 
+-- Agregando FK a
+alter table ventas add constraint fk_ventasIdCliente
+foreign key (idcliente) references clientes(id);
+
 -- Agregando  foreign key a la tabla almacen/productos
 alter table almacen add constraint fk_almacenIdProducto
 foreign key(itemProducto) references productos(item)
 on delete cascade;
-
 
 -- Agregando  foreign key a la tabla tiendas/Almacen
 alter table tiendas add constraint fk_TiendasIdAlmacen
